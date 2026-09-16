@@ -151,8 +151,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cover-color-similarity" id="toc-cover-color-similarity" class="nav-link active" data-scroll-target="#cover-color-similarity">Cover Color Similarity</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -184,7 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">artist</span><span class="sc">}</span><span class="vs"> - </span><span class="sc">${</span>d<span class="op">.</span><span class="at">title</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>d<span class="op">.</span><span class="at">year</span><span class="sc">}</span><span class="vs">)`</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div style="margin-top: 20px;"&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div style="margin-top: 20px; margin-bottom: 30px;"&gt;</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;img src="data/</span><span class="sc">${</span>selected<span class="op">.</span><span class="at">cover_filename</span><span class="sc">}</span><span class="vs">" alt="</span><span class="sc">${</span>selected<span class="op">.</span><span class="at">title</span><span class="sc">}</span><span class="vs">" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"&gt;</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p style="display:none; color: #888; font-style: italic;"&gt;Cover image not available.&lt;/p&gt;</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -210,12 +216,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<section id="cover-color-similarity" class="level2">
+<h2 class="anchored" data-anchor-id="cover-color-similarity">Cover Color Similarity</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="24" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 23;"><span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>similarity <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/similarity.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(similarity<span class="op">,</span> {</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">columns</span><span class="op">:</span> [<span class="st">"Artist 1"</span><span class="op">,</span> <span class="st">"Album 1"</span><span class="op">,</span> <span class="st">"Artist 2"</span><span class="op">,</span> <span class="st">"Album 2"</span><span class="op">,</span> <span class="st">"Similarity"</span>]<span class="op">,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> {</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Similarity"</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="dt">rows</span><span class="op">:</span> <span class="dv">15</span><span class="op">,</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">sort</span><span class="op">:</span> <span class="st">"Similarity"</span><span class="op">,</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImFsYnVtcyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9hbGJ1bXMuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5cbnZpZXdvZiBzZWxlY3RlZCA9IElucHV0cy5zZWxlY3QoYWxidW1zLCB7XG4gIGxhYmVsOiBcIlNlbGVjdCBhbiBhbGJ1bTpcIixcbiAgZm9ybWF0OiBkID0+IGAke2QuYXJ0aXN0fSAtICR7ZC50aXRsZX0gKCR7ZC55ZWFyfSlgXG59KVxuXG5odG1sYDxkaXYgc3R5bGU9XCJtYXJnaW4tdG9wOiAyMHB4O1wiPlxuICA8aW1nIHNyYz1cImRhdGEvJHtzZWxlY3RlZC5jb3Zlcl9maWxlbmFtZX1cIiBhbHQ9XCIke3NlbGVjdGVkLnRpdGxlfVwiIHN0eWxlPVwibWF4LXdpZHRoOiA0MDBweDsgd2lkdGg6IDEwMCU7IGJvcmRlci1yYWRpdXM6IDhweDsgYm94LXNoYWRvdzogMCA0cHggNnB4IHJnYmEoMCwwLDAsMC4xKTtcIiBvbmVycm9yPVwidGhpcy5zdHlsZS5kaXNwbGF5PSdub25lJzsgdGhpcy5uZXh0RWxlbWVudFNpYmxpbmcuc3R5bGUuZGlzcGxheT0nYmxvY2snO1wiPlxuICA8cCBzdHlsZT1cImRpc3BsYXk6bm9uZTsgY29sb3I6ICM4ODg7IGZvbnQtc3R5bGU6IGl0YWxpYztcIj5Db3ZlciBpbWFnZSBub3QgYXZhaWxhYmxlLjwvcD5cbjwvZGl2PmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2VsZWN0ZWQnKSJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImFsYnVtcyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9hbGJ1bXMuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5cbnZpZXdvZiBzZWxlY3RlZCA9IElucHV0cy5zZWxlY3QoYWxidW1zLCB7XG4gIGxhYmVsOiBcIlNlbGVjdCBhbiBhbGJ1bTpcIixcbiAgZm9ybWF0OiBkID0+IGAke2QuYXJ0aXN0fSAtICR7ZC50aXRsZX0gKCR7ZC55ZWFyfSlgXG59KVxuXG5odG1sYDxkaXYgc3R5bGU9XCJtYXJnaW4tdG9wOiAyMHB4OyBtYXJnaW4tYm90dG9tOiAzMHB4O1wiPlxuICA8aW1nIHNyYz1cImRhdGEvJHtzZWxlY3RlZC5jb3Zlcl9maWxlbmFtZX1cIiBhbHQ9XCIke3NlbGVjdGVkLnRpdGxlfVwiIHN0eWxlPVwibWF4LXdpZHRoOiA0MDBweDsgd2lkdGg6IDEwMCU7IGJvcmRlci1yYWRpdXM6IDhweDsgYm94LXNoYWRvdzogMCA0cHggNnB4IHJnYmEoMCwwLDAsMC4xKTtcIiBvbmVycm9yPVwidGhpcy5zdHlsZS5kaXNwbGF5PSdub25lJzsgdGhpcy5uZXh0RWxlbWVudFNpYmxpbmcuc3R5bGUuZGlzcGxheT0nYmxvY2snO1wiPlxuICA8cCBzdHlsZT1cImRpc3BsYXk6bm9uZTsgY29sb3I6ICM4ODg7IGZvbnQtc3R5bGU6IGl0YWxpYztcIj5Db3ZlciBpbWFnZSBub3QgYXZhaWxhYmxlLjwvcD5cbjwvZGl2PmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InNpbWlsYXJpdHkgPSBGaWxlQXR0YWNobWVudChcImRhdGEvc2ltaWxhcml0eS5jc3ZcIikuY3N2KHsgdHlwZWQ6IHRydWUgfSlcblxuSW5wdXRzLnRhYmxlKHNpbWlsYXJpdHksIHtcbiAgY29sdW1uczogW1wiQXJ0aXN0IDFcIiwgXCJBbGJ1bSAxXCIsIFwiQXJ0aXN0IDJcIiwgXCJBbGJ1bSAyXCIsIFwiU2ltaWxhcml0eVwiXSxcbiAgZm9ybWF0OiB7XG4gICAgXCJTaW1pbGFyaXR5XCI6IGQgPT4gYCR7ZH0lYFxuICB9LFxuICByb3dzOiAxNSxcbiAgc29ydDogXCJTaW1pbGFyaXR5XCIsXG4gIHJldmVyc2U6IHRydWVcbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NlbGVjdGVkJykifV19
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
