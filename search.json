@@ -11,6 +11,6 @@
     "href": "index.html",
     "title": "Albums",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "albums = FileAttachment(\"data/queen_albums.csv\").csv({ typed: true })\n\nviewof selected = Inputs.select(albums, {\n  label: \"Select an album:\",\n  format: d =&gt; `${d.year} - ${d.title}`\n})\n\nhtml`&lt;div style=\"margin-top: 20px;\"&gt;\n  &lt;img src=\"data/${selected.cover_filename}\" alt=\"${selected.title}\" style=\"max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);\"&gt;\n&lt;/div&gt;`"
   }
 ]
