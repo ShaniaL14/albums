@@ -11,6 +11,6 @@
     "href": "index.html",
     "title": "Albums",
     "section": "",
-    "text": "albums = FileAttachment(\"data/queen_albums.csv\").csv({ typed: true })\n\nviewof selected = Inputs.select(albums, {\n  label: \"Select an album:\",\n  format: d =&gt; `${d.year} - ${d.title}`\n})\n\nhtml`&lt;div style=\"margin-top: 20px;\"&gt;\n  &lt;img src=\"data/${selected.cover_filename}\" alt=\"${selected.title}\" style=\"max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);\"&gt;\n&lt;/div&gt;`"
+    "text": "albums = FileAttachment(\"data/albums.csv\").csv({ typed: true })\n\nviewof selected = Inputs.select(albums, {\n  label: \"Select an album:\",\n  format: d =&gt; `${d.artist} - ${d.title} (${d.year})`\n})\n\nhtml`&lt;div style=\"margin-top: 20px;\"&gt;\n  &lt;img src=\"data/${selected.cover_filename}\" alt=\"${selected.title}\" style=\"max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);\" onerror=\"this.style.display='none'; this.nextElementSibling.style.display='block';\"&gt;\n  &lt;p style=\"display:none; color: #888; font-style: italic;\"&gt;Cover image not available.&lt;/p&gt;\n&lt;/div&gt;`"
   }
 ]
