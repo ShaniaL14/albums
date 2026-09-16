@@ -4,14 +4,15 @@ title: "Albums"
 
 ```{ojs}
 //| echo: false
-albums = FileAttachment("data/queen_albums.csv").csv({ typed: true })
+albums = FileAttachment("data/albums.csv").csv({ typed: true })
 
 viewof selected = Inputs.select(albums, {
   label: "Select an album:",
-  format: d => `${d.year} - ${d.title}`
+  format: d => `${d.artist} - ${d.title} (${d.year})`
 })
 
 html`<div style="margin-top: 20px;">
-  <img src="data/${selected.cover_filename}" alt="${selected.title}" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <img src="data/${selected.cover_filename}" alt="${selected.title}" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+  <p style="display:none; color: #888; font-style: italic;">Cover image not available.</p>
 </div>`
 ```
