@@ -11,8 +11,25 @@ viewof selected = Inputs.select(albums, {
   format: d => `${d.artist} - ${d.title} (${d.year})`
 })
 
-html`<div style="margin-top: 20px;">
+html`<div style="margin-top: 20px; margin-bottom: 30px;">
   <img src="data/${selected.cover_filename}" alt="${selected.title}" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
   <p style="display:none; color: #888; font-style: italic;">Cover image not available.</p>
 </div>`
+```
+
+## Cover Color Similarity
+
+```{ojs}
+//| echo: false
+similarity = FileAttachment("data/similarity.csv").csv({ typed: true })
+
+Inputs.table(similarity, {
+  columns: ["Artist 1", "Album 1", "Artist 2", "Album 2", "Similarity"],
+  format: {
+    "Similarity": d => `${d}%`
+  },
+  rows: 15,
+  sort: "Similarity",
+  reverse: true
+})
 ```
