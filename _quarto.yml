@@ -1,5 +1,8 @@
 project:
   type: website
+  resources:
+    - data/
+
 
 website:
   title: "Albums"

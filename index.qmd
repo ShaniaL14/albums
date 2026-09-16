@@ -2,6 +2,16 @@
 title: "Albums"
 ---
 
-This is a Quarto website.
+```{ojs}
+//| echo: false
+albums = FileAttachment("data/queen_albums.csv").csv({ typed: true })
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+viewof selected = Inputs.select(albums, {
+  label: "Select an album:",
+  format: d => `${d.year} - ${d.title}`
+})
+
+html`<div style="margin-top: 20px;">
+  <img src="data/${selected.cover_filename}" alt="${selected.title}" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+</div>`
+```
