@@ -4,32 +4,80 @@ title: "Albums"
 
 ```{ojs}
 //| echo: false
-albums = FileAttachment("data/albums.csv").csv({ typed: true })
+similarity = FileAttachment("data/similarity.csv").csv({ typed: true })
+albumsRaw = FileAttachment("data/albums.csv").csv({ typed: true })
 
-viewof selected = Inputs.select(albums, {
-  label: "Select an album:",
-  format: d => `${d.artist} - ${d.title} (${d.year})`
+albums = albumsRaw.filter(d => {
+  const name = `${d.title} (${d.year})`
+  return similarity.some(s => s["Album 1"] === name || s["Album 2"] === name)
 })
 
-html`<div style="margin-top: 20px; margin-bottom: 30px;">
-  <img src="data/${selected.cover_filename}" alt="${selected.title}" style="max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-  <p style="display:none; color: #888; font-style: italic;">Cover image not available.</p>
-</div>`
+viewof selectedArtist = Inputs.select([...new Set(albums.map(d => d.artist))], {
+  label: "Select an artist:"
+})
+
+filteredAlbums = albums.filter(d => d.artist === selectedArtist)
+
+viewof selected = Inputs.select(filteredAlbums, {
+  label: "Select an album:",
+  format: d => `${d.title} (${d.year})`
+})
+
+html`
+<div class="album-card" style="max-width: 420px; margin-top: 20px; margin-bottom: 35px; text-align: left;">
+  <div style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 4px;">
+    ${selected?.artist}
+  </div>
+  <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 1.3rem;">
+    ${selected?.title} <span style="font-weight: normal; color: #6c757d;">(${selected?.year})</span>
+  </h3>
+  <img src="data/${selected?.cover_filename}" alt="${selected?.title}" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.12);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+  <p style="display:none; color: #888; font-style: italic; margin-top: 8px;">Cover image not available.</p>
+</div>
+`
 ```
 
 ## Cover Color Similarity
 
 ```{ojs}
 //| echo: false
-similarity = FileAttachment("data/similarity.csv").csv({ typed: true })
+selectedAlbumName = selected ? `${selected.title} (${selected.year})` : ""
 
-Inputs.table(similarity, {
-  columns: ["Artist 1", "Album 1", "Artist 2", "Album 2", "Similarity"],
-  format: {
-    "Similarity": d => `${d}%`
-  },
-  rows: 15,
-  sort: "Similarity",
-  reverse: true
-})
+matches = similarity
+  .filter(d => d["Album 1"] === selectedAlbumName || d["Album 2"] === selectedAlbumName)
+  .map(d => {
+    const isFirst = d["Album 1"] === selectedAlbumName;
+    const albumName = isFirst ? d["Album 2"] : d["Album 1"];
+    const artistName = isFirst ? d["Artist 2"] : d["Artist 1"];
+    const info = albums.find(a => `${a.title} (${a.year})` === albumName);
+    return {
+      album: albumName,
+      artist: artistName,
+      similarity: d["Similarity"],
+      cover: info ? info.cover_filename : null
+    };
+  })
+  .sort((a, b) => b.similarity - a.similarity)
+
+mostSimilar = matches[0]
+mostDifferent = matches[matches.length - 1]
+
+html`
+${!mostSimilar ? html`<p style="color: #888; font-style: italic;">No similarity data available for this album.</p>` : html`
+<div style="display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px;">
+  <div class="album-card" style="flex: 1; min-width: 240px; max-width: 300px;">
+    <div class="similarity-badge badge-similar">★ Most Similar • ${mostSimilar.similarity}%</div>
+    <img src="data/${mostSimilar.cover}" alt="${mostSimilar.album}" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <p style="margin-top: 12px; font-weight: 600; margin-bottom: 2px;">${mostSimilar.album}</p>
+    <p style="color: #6c757d; font-size: 0.9rem; margin-top: 0;">${mostSimilar.artist}</p>
+  </div>
+  <div class="album-card" style="flex: 1; min-width: 240px; max-width: 300px;">
+    <div class="similarity-badge badge-different">⚡ Most Different • ${mostDifferent.similarity}%</div>
+    <img src="data/${mostDifferent.cover}" alt="${mostDifferent.album}" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <p style="margin-top: 12px; font-weight: 600; margin-bottom: 2px;">${mostDifferent.album}</p>
+    <p style="color: #6c757d; font-size: 0.9rem; margin-top: 0;">${mostDifferent.artist}</p>
+  </div>
+</div>
+`}
+`
 ```
